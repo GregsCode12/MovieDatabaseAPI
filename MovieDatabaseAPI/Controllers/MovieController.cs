@@ -65,7 +65,7 @@ namespace MovieDatabaseAPI.Controllers
         [HttpDelete("delete-movie-by-id/{movieId}")]
         public IActionResult DeleteMovieById(int movieId)
         {
-            var deletedMovie = _moviesService.DeleteById(movieId);
+            var deletedMovie = _moviesService.DeleteMovieById(movieId);
             if(deletedMovie == null)
             {
                 return NotFound();
