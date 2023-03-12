@@ -1,35 +1,78 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MovieDatabaseAPI.Data.Models;
+using MovieDatabaseAPI.Services;
 
 namespace MovieDatabaseAPI.Controllers
 {
+
     [ApiController]
-    [Route("[controller]")]
     public class MovieController : ControllerBase
     {
+
+        public MoviesService _moviesService;
+
         private readonly ILogger<MovieController> _logger;
 
-        public MovieController(ILogger<MovieController> logger)
+        public MovieController(ILogger<MovieController> logger, MoviesService moviesService)
         {
             _logger = logger;
+            _moviesService = moviesService;
         }
 
-        [HttpGet(Name = "GetMovie")]
-        public IEnumerable<Movie> Get()
+        [HttpGet("get-all-movies")]
+        public IActionResult Get()
         {
-            IEnumerable<Movie> ListOfStuff = new List<Movie>();
-            
-            Movie test = new Movie();
+            var allMovies = _moviesService.FetchMovies();
+            if (allMovies == null)
+            {
+                return NotFound();
+            } else { 
+            return Ok(allMovies);
+            }
+        }
 
-            test.Actors = new List<Actor>();
-            test.ImagePaths = "this is my path; This is another one";
-            test.Title = "Bleh";
-            test.Year = "2022";
-            test.Description = "This does suck big time";
+        [HttpGet("get-single-movie/{movieId}")]
+        public IActionResult Get(int movieId)
+        {
+            var result = _moviesService.GetMovieById(movieId);
+            if(result== null)
+            {
+                return NotFound();
+            } else {
+                return Ok(result);
+            }
+        }
+        [HttpPost("create-movie")]
+        public IActionResult AddMovie([FromBody] Movie movie)
+        {
+            _moviesService.AddMovie(movie);
+            return Ok();
 
-            ListOfStuff.Append(test);
-            return ListOfStuff;
+        }
+        [HttpPut("edit-movie-by-id/{movieId}")]
+        public IActionResult EditMovie(int movieId, [FromBody] Movie movie)
+        {
+            var updatedMovie = _moviesService.EditMovieById(movieId, movie);
+            if (updatedMovie == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(updatedMovie);
+            }
+        }
+        [HttpDelete("delete-movie-by-id/{movieId}")]
+        public IActionResult DeleteMovieById(int movieId)
+        {
+            var deletedMovie = _moviesService.DeleteById(movieId);
+            if(deletedMovie == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(deletedMovie);
+            }
         }
     }
 }
