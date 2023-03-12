@@ -8,6 +8,7 @@ namespace MovieDatabaseAPI.Data.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public List<Movie>? Movies { get; set; }
+        
+        public virtual ICollection<Movie>? Movies { get; set; }
     }
 }

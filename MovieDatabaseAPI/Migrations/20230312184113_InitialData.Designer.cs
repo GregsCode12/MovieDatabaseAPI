@@ -12,7 +12,7 @@ using MovieDatabaseAPI.Data;
 namespace MovieDatabaseAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230312175558_InitialData")]
+    [Migration("20230312184113_InitialData")]
     partial class InitialData
     {
         /// <inheritdoc />
