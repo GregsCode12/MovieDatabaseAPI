@@ -12,6 +12,17 @@ namespace MovieDatabaseAPI.Services
             _context = context;
         }
 
+        public List<Data.Models.Movie> FetchMoviesPagination(int page, int pageSize)
+        {
+            int offset = pageSize - 1 * page;
+            var movies = _context.Movies.Skip(offset).Take(pageSize).ToList();
+            foreach (var movie in movies)
+            {
+                _context.Entry(movie).Collection(p => p.Actors).Load();
+            }
+            return movies;
+        }
+
         public List<Data.Models.Movie> FetchMovies()
         {
             foreach(var movie in _context.Movies.ToList())

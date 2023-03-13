@@ -30,6 +30,17 @@ namespace MovieDatabaseAPI.Controllers
             return Ok(allMovies);
             }
         }
+        [HttpGet("get-all-movies/{page}/{pageSize}")]
+        public IActionResult Get(int page, int pageSize) {
+            var movies = _moviesService.FetchMoviesPagination(page, pageSize);
+            if(movies == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(movies);
+            }
+        }
 
         [HttpGet("get-single-movie/{movieId}")]
         public IActionResult Get(int movieId)
