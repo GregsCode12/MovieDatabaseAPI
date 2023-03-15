@@ -19,6 +19,7 @@ namespace MovieDatabaseAPI.Controllers
         }
 
         [HttpGet("get-all-actors")]
+        [ResponseCache(VaryByHeader ="User-Agent", Duration =100)]
         public IActionResult Get()
         {
             var allActors = _actorService.FetchActors();
@@ -28,6 +29,20 @@ namespace MovieDatabaseAPI.Controllers
             } else
             {
                 return Ok(allActors);
+            }
+        }
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 40)]
+        [HttpGet("get-all-actors/{page}/{pageSize}")]
+        public IActionResult Get(int page, int pageSize)
+        {
+            var actors = _actorService.FetchActorsPagination(page, pageSize);
+            if(actors == null)
+            {
+                return NotFound();
+
+            } else
+            {
+                return Ok(actors);
             }
         }
 
