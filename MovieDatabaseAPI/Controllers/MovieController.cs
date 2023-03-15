@@ -18,7 +18,7 @@ namespace MovieDatabaseAPI.Controllers
             _logger = logger;
             _moviesService = moviesService;
         }
-
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 100)]
         [HttpGet("get-all-movies")]
         public IActionResult Get()
         {
@@ -30,6 +30,7 @@ namespace MovieDatabaseAPI.Controllers
             return Ok(allMovies);
             }
         }
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 40)]
         [HttpGet("get-all-movies/{page}/{pageSize}")]
         public IActionResult Get(int page, int pageSize) {
             var movies = _moviesService.FetchMoviesPagination(page, pageSize);
@@ -39,6 +40,18 @@ namespace MovieDatabaseAPI.Controllers
             } else
             {
                 return Ok(movies);
+            }
+        }
+        [HttpGet("search-movies/{query}")]
+        public IActionResult Get(string query)
+        {
+            var result = _moviesService.SearchMovies(query);
+            if(result == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(result);
             }
         }
 
