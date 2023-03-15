@@ -12,6 +12,13 @@ namespace MovieDatabaseAPI.Services
             _context = context;
         }
 
+        public List<Data.Models.Movie>? SearchMovies(string query)
+        {
+            var movies = _context.Movies.Where(x => x.Title.ToLower().Contains(query.ToLower()) || x.Description.ToLower().Contains(query.ToLower())).ToList();
+            return movies;
+
+        }
+
         public List<Data.Models.Movie> FetchMoviesPagination(int page, int pageSize)
         {
             int offset = pageSize - 1 * page;
