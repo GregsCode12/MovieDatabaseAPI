@@ -19,7 +19,7 @@ namespace MovieDatabaseAPI.Controllers
         }
 
         [HttpGet("get-all-actors")]
-        [ResponseCache(VaryByHeader ="User-Agent", Duration =100)]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult Get()
         {
             var allActors = _actorService.FetchActors();
@@ -31,8 +31,8 @@ namespace MovieDatabaseAPI.Controllers
                 return Ok(allActors);
             }
         }
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 40)]
         [HttpGet("get-all-actors/{page}/{pageSize}")]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult Get(int page, int pageSize)
         {
             var actors = _actorService.FetchActorsPagination(page, pageSize);
@@ -47,6 +47,7 @@ namespace MovieDatabaseAPI.Controllers
         }
 
         [HttpGet("get-single-actor/{actorId}")]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult Get(int actorId) {
             var result = _actorService.GetActorById(actorId);
             if (result == null)
@@ -58,12 +59,14 @@ namespace MovieDatabaseAPI.Controllers
             }
         }
         [HttpPost("create-actor")]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult AddActor([FromBody] Actor actor)
         {
             _actorService.AddActor(actor);
             return Ok();
         }
         [HttpPut("edit-actor-by-id/{actorId}")]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult EditActor(int actorId, [FromBody] Actor actor)
         {
             var updatedActor = _actorService.EditActorById(actorId, actor);
@@ -77,6 +80,7 @@ namespace MovieDatabaseAPI.Controllers
             }
         }
         [HttpDelete("delete-actor-by-id/{actorId}")]
+        [TypeFilter(typeof(CounterActionFilter))]
         public IActionResult DeleteActorById(int actorId)
         {
             var deletedActor = _actorService.DeleteActorById(actorId);
