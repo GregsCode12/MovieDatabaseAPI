@@ -1,4 +1,6 @@
-﻿namespace MovieDatabaseAPI.Data
+﻿using MovieDatabaseAPI.Data.Models;
+
+namespace MovieDatabaseAPI.Data
 {
     public class AppDbInitializer
     {

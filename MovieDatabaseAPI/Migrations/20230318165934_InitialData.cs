@@ -43,6 +43,19 @@ namespace MovieDatabaseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RequestCount",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestCount", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ActorMovie",
                 columns: table => new
                 {
@@ -77,6 +90,9 @@ namespace MovieDatabaseAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ActorMovie");
+
+            migrationBuilder.DropTable(
+                name: "RequestCount");
 
             migrationBuilder.DropTable(
                 name: "Actors");

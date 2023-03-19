@@ -14,9 +14,18 @@ namespace MovieDatabaseAPI.Data
 
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<RequestCount> RequestCount { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             modelBuilder.Entity<Actor>()
+                .HasMany(m => m.Movies)
+                .WithMany(a => a.Actors);
+
+            modelBuilder.Entity<Movie>()
+                .HasMany(a => a.Actors)
+                .WithMany(m => m.Movies);
+
             base.OnModelCreating(modelBuilder);
 
         }

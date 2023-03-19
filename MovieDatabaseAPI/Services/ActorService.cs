@@ -25,11 +25,12 @@ namespace MovieDatabaseAPI.Services
 
         public List<Data.Models.Actor> FetchActors()
         {
-            foreach(var actor in _context.Actors)
+            var actors = _context.Actors;
+            foreach(var actor in actors)
             {
                 _context.Entry(actor).Collection(p => p.Movies).Load();
             }
-            return _context.Actors.ToList();
+            return actors.ToList();
         }
 
         public Data.Models.Actor? GetActorById(int actorId)

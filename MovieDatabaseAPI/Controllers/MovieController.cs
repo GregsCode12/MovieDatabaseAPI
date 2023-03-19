@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieDatabaseAPI.Data.Models;
 using MovieDatabaseAPI.Services;
 
+
 namespace MovieDatabaseAPI.Controllers
 {
 
@@ -18,7 +19,7 @@ namespace MovieDatabaseAPI.Controllers
             _logger = logger;
             _moviesService = moviesService;
         }
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 100)]
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpGet("get-all-movies")]
         public IActionResult Get()
         {
@@ -30,7 +31,7 @@ namespace MovieDatabaseAPI.Controllers
             return Ok(allMovies);
             }
         }
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 40)]
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpGet("get-all-movies/{page}/{pageSize}")]
         public IActionResult Get(int page, int pageSize) {
             var movies = _moviesService.FetchMoviesPagination(page, pageSize);
@@ -42,6 +43,7 @@ namespace MovieDatabaseAPI.Controllers
                 return Ok(movies);
             }
         }
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpGet("search-movies/{query}")]
         public IActionResult Get(string query)
         {
@@ -54,7 +56,7 @@ namespace MovieDatabaseAPI.Controllers
                 return Ok(result);
             }
         }
-
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpGet("get-single-movie/{movieId}")]
         public IActionResult Get(int movieId)
         {
@@ -66,6 +68,7 @@ namespace MovieDatabaseAPI.Controllers
                 return Ok(result);
             }
         }
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpPost("create-movie")]
         public IActionResult AddMovie([FromBody] Movie movie)
         {
@@ -73,6 +76,7 @@ namespace MovieDatabaseAPI.Controllers
             return Ok();
 
         }
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpPut("edit-movie-by-id/{movieId}")]
         public IActionResult EditMovie(int movieId, [FromBody] Movie movie)
         {
@@ -86,6 +90,7 @@ namespace MovieDatabaseAPI.Controllers
                 return Ok(updatedMovie);
             }
         }
+        [TypeFilter(typeof(CounterActionFilter))]
         [HttpDelete("delete-movie-by-id/{movieId}")]
         public IActionResult DeleteMovieById(int movieId)
         {
